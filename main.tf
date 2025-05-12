@@ -288,7 +288,7 @@ resource "aws_instance" "web_server" {
   }
 }
 
-# 起動テンプレートで起動するEC2インスタンスがこのIAMロールを引き受けられるようにする
+# 起動テンプレートで起動するEC2インスタンスがこのIAMロールを引き受けられるようにする（SSMでログインするため）
 resource "aws_iam_role" "ssm_role" {
   name = "terra-ec2-ssm-role"
   assume_role_policy = jsonencode({
@@ -315,7 +315,7 @@ resource "aws_iam_instance_profile" "ssm_profile" {
   role = aws_iam_role.ssm_role.name
 }
 
-# 起動テンプレート作成
+# 起動テンプレート作成（APIサーバ）
 resource "aws_launch_template" "api_launch_template" {
   image_id      = "ami-078f615f0d851c837"
   instance_type = "t2.micro"
